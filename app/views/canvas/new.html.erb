@@ -1,2 +1,7 @@
-<h1>Canvas#new</h1>
-<p>Find me in app/views/canvas/new.html.erb</p>
+<h1>Canvas</h1> 
+<canvas id="whiteboard" width="300" height="300"></canvas>
+<%= javascript_include_tag('draw') %>
+<br />
+<input type="button" name="clear" value="クリア" onclick="clean();">
+<br />
+<a href="#" id="download" download="canvas.png" onclick="beforeDownload('download')">ダウンロード</a>

@@ -13,3 +13,6 @@
  *= require_tree .
  *= require_self
  */
+canvas#whiteboard {
+    border: 1px solid  #333333;
+}
