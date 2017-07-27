@@ -1,2 +1,3 @@
 # canvas
-simple web canvas tool
+This is simple web canvas.
+
