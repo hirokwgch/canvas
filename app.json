@@ -2,8 +2,10 @@
   "name": "canvas",
   "description": "",
   "scripts": {
+    "postdeploy": "bundle exec rails s -d"
   },
   "env": {
+    "RAILS_ENV": "production"
   },
   "formation": {
   },
