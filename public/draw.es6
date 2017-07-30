@@ -54,12 +54,16 @@ function addEvent(canvas) {
     // Eventにマウスドラッグで線引くのを登録する
     //描き始め
     canvas.addEventListener('mousedown', onClick, false);
+    canvas.addEventListener('ontouchstart', onClick, false);
+
 
     //描き中
     canvas.addEventListener('mousemove', onMove, false);
+    canvas.addEventListener('ontouchmove', onMove, false);
 
     //描き終わり
     canvas.addEventListener('mouseup', drawEnd, false);
+    canvas.addEventListener('ontouchend', drawEnd, false);
     canvas.addEventListener('mouseout', drawEnd, false);
 }
 
