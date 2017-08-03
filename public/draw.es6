@@ -15,19 +15,19 @@ class Line {
         this.ended = false;
     }
 
-    start(x,y) {
+    start(x, y) {
         this.startX = x;
         this.startY = y;
         this.started = true;
     }
 
-    finish(x,y) {
-        this.end(x,y);
+    finish(x, y) {
+        this.end(x, y);
         this.draw();
         this.init();
     }
 
-    end(x,y) {
+    end(x, y) {
         this.endX = x;
         this.endY = y;
         this.ended = true;
@@ -45,51 +45,66 @@ class Line {
 }
 
 // Main
+supportTouch = 'ontouchend' in document;
+
 var canvas = document.getElementById('whiteboard');
 var ctx = canvas.getContext('2d');
 var line = new Line(canvas);
+
 addEvent(canvas);
 
+// Functions
+
 function addEvent(canvas) {
-    // Eventにマウスドラッグで線引くのを登録する
-    //描き始め
-    canvas.addEventListener('mousedown', onClick, false);
-    canvas.addEventListener('ontouchstart', onClick, false);
+    log("supportTouch: " + supportTouch)
+    if (supportTouch) {
+        log("register for touch")
+        //描き始め
+        canvas.addEventListener('touchstart', onClick, false);
+        //描き中
+        canvas.addEventListener('touchmove', onTouchMove, false);
+    } else {
+        log("register for mouse")
 
-
-    //描き中
-    canvas.addEventListener('mousemove', onMove, false);
-    canvas.addEventListener('ontouchmove', onMove, false);
-
-    //描き終わり
-    canvas.addEventListener('mouseup', drawEnd, false);
-    canvas.addEventListener('ontouchend', drawEnd, false);
-    canvas.addEventListener('mouseout', drawEnd, false);
+        //描き始め
+        canvas.addEventListener('mousedown', onClick, false);
+        //描き中
+        canvas.addEventListener('mousemove', onMouseMove, false);
+        //描き終わり
+        canvas.addEventListener('mouseup', drawEnd, false);
+        canvas.addEventListener('mouseout', drawEnd, false);
+    }
 }
 
 //event call back
 
 //描き始め
 function onClick(e) {
-    line.start(x(e),y(e));
+    line.start(x(e), y(e));
 }
 
 //描き終わり
 function drawEnd(e) {
-    line.finish(x(e),y(e));
+    line.finish(x(e), y(e));
 }
 
 //描き中
-function onMove(e) {
+function onMouseMove(e) {
     if (press(e)) {
-        line.finish(x(e),y(e));
-        line.start(x(e),y(e));
+        line.finish(x(e), y(e));
+        line.start(x(e), y(e));
     }
+}
+
+function onTouchMove(e) {
+    event.preventDefault();
+    line.finish(x(e), y(e));
+    line.start(x(e), y(e));
 }
 
 // button
 function clean() {
-    ctx.clearRect(0,0,rect().width,rect().height);
+    ctx.clearRect(0, 0, rect().width, rect().height);
 }
 
 function beforeDownload(id) {
@@ -99,11 +114,19 @@ function beforeDownload(id) {
 // utility
 
 function x(e) {
-    return e.clientX - rect().left;
+    if (supportTouch) {
+        return e.touches[0].clientX - rect().left;
+    } else {
+        return e.clientX - rect().left;
+    }
 }
 
 function y(e) {
-    return e.clientY - rect().top;
+    if (supportTouch) {
+        return e.touches[0].clientY - rect().top;
+    } else {
+        return e.clientY - rect().top;
+    }
 }
 
 function rect() {
