@@ -23,7 +23,7 @@ class Line {
 
     finish(x, y) {
         this.end(x, y);
-        this.draw();
+        this.draw(0,0,0);
         this.init();
     }
 
@@ -33,8 +33,9 @@ class Line {
         this.ended = true;
     }
 
-    draw() {
+    draw(r,g,b) {
         if (this.started && this.ended) {
+            this.ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
             this.ctx.beginPath();
             this.ctx.moveTo(this.startX, this.startY);
             this.ctx.lineTo(this.endX, this.endY);
@@ -49,23 +50,24 @@ supportTouch = 'ontouchend' in document;
 
 var canvas = document.getElementById('whiteboard');
 var ctx = canvas.getContext('2d');
+fillCanvas(ctx,255,255,255);
 var line = new Line(canvas);
 
 addEvent(canvas);
 
 // Functions
+function fillCanvas(ctx,r,g,b) {
+    ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
+    ctx.fillRect(0, 0, rect().right, rect().bottom);
+}
 
 function addEvent(canvas) {
-    log("supportTouch: " + supportTouch)
     if (supportTouch) {
-        log("register for touch")
         //描き始め
         canvas.addEventListener('touchstart', onClick, false);
         //描き中
         canvas.addEventListener('touchmove', onTouchMove, false);
     } else {
-        log("register for mouse")
-
         //描き始め
         canvas.addEventListener('mousedown', onClick, false);
         //描き中
@@ -105,6 +107,7 @@ function onTouchMove(e) {
 // button
 function clean() {
     ctx.clearRect(0, 0, rect().width, rect().height);
+    fillCanvas(ctx,255,255,255);
 }
 
 function beforeDownload(id) {
