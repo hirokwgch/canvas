@@ -1,7 +1,9 @@
-<h1>Canvas</h1> 
-<canvas id="whiteboard" width="300" height="300"></canvas>
-<script type="text/javascript" charset="utf-8" src="/draw.es6"></script>
-<br />
-<input type="button" name="clear" value="クリア" onclick="clean();">
-<br />
-<a href="#" id="download" download="canvas.png" onclick="beforeDownload('download')">ダウンロード</a>
+<h1>Canvas</h1>
+<div class="canvas-area">
+  <br />
+  <canvas id="whiteboard" width="300px" height="300px"></canvas>
+  <script type="text/javascript" charset="utf-8" src="/draw.es6"></script>
+  <br/>
+  <input id="clear" class="button" type="button" name="clear" value="クリア" onclick="clean();">
+  <a href="#" id="download" class="button" download="canvas.png" onclick="beforeDownload('download')">ダウンロード</a>
+</div>
