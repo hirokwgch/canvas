@@ -19,6 +19,8 @@ canvas#whiteboard {
 }
 
 body {
+    width: 340px;
+    height: 400px;
     background-color: whitesmoke;
 }
 
@@ -50,4 +52,10 @@ body {
 
 #download {
     float: right
+}
+
+#footer {
+    font-size: 70%;
+    margin: 20px;
+    text-align: center;
 }
