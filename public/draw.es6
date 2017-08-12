@@ -52,8 +52,10 @@ var canvas = document.getElementById('whiteboard');
 var ctx = canvas.getContext('2d');
 fillCanvas(ctx,255,255,255);
 var line = new Line(canvas);
+var imgSrc = null;
 
 addEvent(canvas);
+document.getElementById('files').addEventListener('change', onLoadFile, false);
 
 // Functions
 function fillCanvas(ctx,r,g,b) {
@@ -79,6 +81,35 @@ function addEvent(canvas) {
 }
 
 //event call back
+
+function onLoadFile(evt) {
+    var files = evt.target.files;
+    loadImage(files[0])
+}
+
+// 画像のロード
+function loadImage(imgFile) {
+    var reader = new FileReader();
+
+    reader.onload = (function(theFile) {
+        return function(e) {
+            drawImg(e.target.result);
+            imgSrc = e.target.result;
+        };
+    })(imgFile);
+
+    // Read in the image file as a data URL.
+    reader.readAsDataURL(imgFile);
+}
+
+function drawImg(imgSrc) {
+    var img = new Image();
+    img.src = imgSrc;
+    img.onload = function() {
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+    }
+}
+
 
 //描き始め
 function onClick(e) {
@@ -107,7 +138,12 @@ function onTouchMove(e) {
 // button
 function clean() {
     ctx.clearRect(0, 0, rect().width, rect().height);
-    fillCanvas(ctx,255,255,255);
+    if (imgSrc == null) {
+        fillCanvas(ctx,255,255,255);
+    } else {
+        fillCanvas(ctx,0,0,0);
+        drawImg(imgSrc);
+    }
 }
 
 function beforeDownload(id) {
